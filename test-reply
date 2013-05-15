@@ -1,0 +1,5 @@
+#!/usr/bin/env python
+import os
+import pickle
+with open('/tmp/.checkpasswordenv.pickle','w') as f:
+    pickle.dump(os.environ,f)

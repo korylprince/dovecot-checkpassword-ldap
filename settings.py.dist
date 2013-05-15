@@ -1,0 +1,6 @@
+server='ldap.example.com'
+base='ou=Base,dc=example,dc=com'
+binduser='ldapuser@example.com'
+bindpasswd='password'
+timeout = 2
+strfilter = '(&(sAMAccountName={user})(objectClass=person)(mail={user}@{domain})(!(UserAccountControl:1.2.840.113556.1.4.803:=2)))'

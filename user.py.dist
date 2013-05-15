@@ -1,0 +1,11 @@
+test_user = {
+        'username':'user',
+        'password':'password',
+        'domain':'example.com'
+        'userdb_quota_rule':'*:storage=1024M',
+        'USER':'user@example.com',
+        'HOME':'/var/vmail/example.com/user',
+        'userdb_uid':'vmail',
+        'userdb_gid':'vmail',
+        'EXTRA':'userdb_quota_rule userdb_uid userdb_gid'
+        }
