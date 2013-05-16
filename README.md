@@ -5,6 +5,8 @@ Dovecot's ldap plugin has lots of features, but didn't have everything I needed.
 
 #Usage#
 
+Uses redis as a cache in front of ldap. Make sure to have python-ldap and redis-py installed.
+
 I used this with Active Directory. There's probably things you'd need to change to make it work with something else. Put checkpassword and settings.py somewhere in the same directory then put something like
 
     passdb {
@@ -28,6 +30,8 @@ Can't promise anything though.
 #Tests#
 
 I wrote some unit tests for this. Edit user.py with a known configuration for a user and run the tests.
+
+Running ```python <test file> time``` will run 20 iterations and give the average time.
 
 #Copyright Information#
 Copyright 2013 Kory Prince (korylprince AT gmail DAWT com).

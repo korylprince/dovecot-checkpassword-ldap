@@ -13,14 +13,18 @@ r = StrictRedis()
 
 times = {}
 
-class TestCheckpassword(unittest.TestCase):
+class TestCheckpasswordRedis(unittest.TestCase):
 
     def setUp(self):
         try:
             os.remove('/tmp/.checkpasswordenv.pickle')
         except OSError:
             pass
-        r.delete(test_user['username'])
+        pipe = r.pipeline()
+        pipe.hmset(test_user['username'],test_user['redis'])
+        pipe.expire(test_user['username'],86400)
+        pipe.execute()
+
         self.startTime = time.time()
 
     def tearDown(self):
@@ -32,7 +36,6 @@ class TestCheckpassword(unittest.TestCase):
             os.remove('/tmp/.checkpasswordenv.pickle')
         except OSError:
             pass
-        r.delete(test_user['username'])
 
     def assertInEqual(self,a,b,val):
         """a in b and b[a] == val"""

@@ -7,5 +7,8 @@ test_user = {
         'HOME':'/var/vmail/example.com/user',
         'userdb_uid':'vmail',
         'userdb_gid':'vmail',
-        'EXTRA':'userdb_quota_rule userdb_uid userdb_gid'
+        'EXTRA':'userdb_quota_rule userdb_uid userdb_gid',
+        'redis':{'dn':'CN=User,OU=Users,DC=example,DC=com',
+            'mail':'user@example.com','maxStorage':1024,'hash': 
+            '1ofSBcByute+MDX8yviFiA==\n$9M5vCrqvQ4Pa9vzieewGhnk/weKp8WBUb9mrojPhio1Zxm6QMfqRKBhV23XpYn+QLR+elUuy+k+Z\nZwsK+Z2L6A==\n'}
         }
