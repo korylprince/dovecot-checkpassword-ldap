@@ -1,30 +1,45 @@
 import unittest
 import pickle
 import subprocess
-import os
+import os,sys
 from user import test_user
+import time
+from redis import StrictRedis
 
 checkpassword = os.path.dirname(os.path.abspath(__file__))+'/checkpassword'
 reply = os.path.dirname(os.path.abspath(__file__))+'/test-reply'
 
-class TestCheckpassword(unittest.TestCase):
+r = StrictRedis()
 
-    def assertInEqual(self,a,b,val):
-        """a in b and b[a] == val"""
-        self.assertIn(a,b)
-        self.assertEqual(b[a],val)
+times = {}
+
+class TestCheckpassword(unittest.TestCase):
 
     def setUp(self):
         try:
             os.remove('/tmp/.checkpasswordenv.pickle')
         except OSError:
             pass
+        for x in r.keys():
+            r.delete(x)
+        self.startTime = time.time()
 
     def tearDown(self):
+        t = time.time() - self.startTime
+        times[self.id()] = (times.get(self.id(),(0,0))[0] + t,times.get(self.id(),(0,0))[1] + 1)
+        print "%s: %.3f" % (self.id().split('.')[2], t)
+
         try:
             os.remove('/tmp/.checkpasswordenv.pickle')
         except OSError:
             pass
+        for x in r.keys():
+            r.delete(x)
+
+    def assertInEqual(self,a,b,val):
+        """a in b and b[a] == val"""
+        self.assertIn(a,b,msg='{0} not in b'.format(a))
+        self.assertEqual(b[a],val,msg='b[{0}] != {1}'.format(a,val))
 
     def fixEnv(self,env):
         for x in ['PYTHONHOME','VIRTUALENV','PATH']:
@@ -147,4 +162,17 @@ class TestCheckpassword(unittest.TestCase):
         self.assertEqual(ret,3)
 
 if __name__ == "__main__":
-    unittest.main()
+    if 'time' not in sys.argv:
+        unittest.main()
+    else:
+        sys.argv = sys.argv[0:1]
+        for x in range(20):
+            try:
+                unittest.main()
+            except SystemExit:
+                pass
+            except KeyboardInterrupt:
+                break
+for key in sorted(times.keys()):
+    print key.split('.')[2],round(times[key][0]/times[key][1],3)
+
